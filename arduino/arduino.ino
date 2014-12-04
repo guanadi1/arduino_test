@@ -33,7 +33,6 @@ void setup() {
 
 pinMode(DCPIN, OUTPUT); // pin motor DC como salida
 pinMode(SPEAKERPIN, OUTPUT); // speaker como salida 
-pinMode(LDRPIN, INPUT);   // pin analogico ldr como entrada 
 pinMode(REDRGB, OUTPUT);  // rgb pins como salida 
 pinMode(GREENRGB, OUTPUT);
 pinMode(BLUERGB, OUTPUT);
@@ -51,27 +50,23 @@ dht.begin(); // iniciamos sensor dth 11
 
 void loop() {
 
-delay(2000); // Espera dos segundos para realizar la primera medición.
+delay(1000); // Espera dos segundos para realizar la primera medición.
 
 leerDato();  // leer datos de serial y lo almacena en rec
-
-Serial.print("valor recibido:");
-Serial.println(rec);
-
 /*----------ldr---------------*/
 
-int vldr = analogRead(LDR);
-Serial.println(v);
-
-if( vdlr < 400 ){
+int vldr = analogRead(LDRPIN);
+Serial.print("Valor ldr: ");
+Serial.println(vldr);
+if( vldr < 400 ){
 
 setColor(0, 255, 255); // ilumina led rgb con color aqua
-Serial.println(" led encendido");
+Serial.println("led encendido por LDR");
 
 }else{
 
 setColor(0, 0, 0); // apagamos el led
-Serial.println(" led apagado");
+Serial.println("led apagado por LDR");
 
 }
 
@@ -81,15 +76,15 @@ switch(rec){
 
 case '0':
 setColor(0, 255, 255); // ilumina led rgb con color aqua
-Serial.println(" led encendido");
+Serial.println("led encendido boton");
 break;
 case '1':
 setColor(0, 0, 0); // apagamos el led
-Serial.println(" led apagado");
+Serial.println("led apagado boton");
 break;
 case '2':
 digitalWrite(RELAYPIN, HIGH); // bombilla on
-Serial.println(" bombilla on");
+Serial.println("bombilla on");
 break;
 case '3':
 digitalWrite(RELAYPIN, LOW); // bombilla off
@@ -128,7 +123,7 @@ long distancia= uS/US_ROUNDTRIP_CM; // Calcular la distancia con base en una con
 Serial.print("Distancia: ");// Imprimir la distancia medida a la consola serial
 Serial.print(distancia );
 Serial.println(" cm");
-if (distancia > 2) { // check if the input is HIGH
+if (distancia < 2) { // check if the input is HIGH
 playTono(300, 160);
 delay(150);
 } else {
@@ -176,11 +171,13 @@ tiempo_transcurrido += (periodo);
 /*------------- funcion para leer datos enviados por serial --------------*/
 
 void leerDato(){
-if (Serial.available()>0){
-rec = Serial.read();
-//rec = bluetoothBridge.read(); // leemos la comunicacion serial de bluetooth
+  if (Serial.available()>0){
+     rec = Serial.read();
+     //rec = bluetoothBridge.read(); // leemos la comunicacion serial de bluetooth
+     Serial.print("valor recibido:");
+     Serial.println(rec);     
 }
-Serial.flush();
+ Serial.flush();
 }
 
 
