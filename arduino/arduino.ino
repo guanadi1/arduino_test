@@ -22,7 +22,7 @@
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); //iniciamos sensor ultrasonico con la clase NewPing
 DHT dht(DHTPIN, DHTTYPE); // Inicializa el sensor dth
-SoftwareSerial bluetoothBridge(10,11);  // Inicializa bluetooth
+SoftwareSerial BT(10,11);  // Inicializa bluetooth
 char rec; // variable que recoje valor recibido
 char sen; // variable con valor a enviar
 int velocidad = 255; // variable donde almacenamos la velocidad del motor 0-255
@@ -58,17 +58,19 @@ leerDato();  // leer datos de serial y lo almacena en rec
 int vldr = analogRead(LDRPIN);
 Serial.print("Valor ldr: ");
 Serial.println(vldr);
-if( vldr < 400 ){
+
+if( vldr < 400 || rec == '0' ){
 
 setColor(0, 255, 255); // ilumina led rgb con color aqua
 Serial.println("led encendido por LDR");
 
-}else{
+}else if( vldr > 400 || rec == '1' ) {
 
 setColor(0, 0, 0); // apagamos el led
 Serial.println("led apagado por LDR");
 
 }
+
 
 
 
@@ -96,6 +98,8 @@ break;
 
 float humedad = dht.readHumidity(); // Obtiene la Humedad
 float temperatura = dht.readTemperature(); // Obtiene la Temperatura en Celsius
+
+enviarTemperatura(temperatura);   // enviamos la temperatuta por serial 
 
 if (isnan(humedad) || isnan(temperatura)) { // Control de errores, valida que se obtuvieron valores para los datos medidos
 Serial.println("Fallo al leer el sensor DHT!");
@@ -173,11 +177,23 @@ tiempo_transcurrido += (periodo);
 void leerDato(){
   if (Serial.available()>0){
      rec = Serial.read();
-     //rec = bluetoothBridge.read(); // leemos la comunicacion serial de bluetooth
+     //rec = BT.read(); // leemos la comunicacion serial de bluetooth
      Serial.print("valor recibido:");
      Serial.println(rec);     
 }
  Serial.flush();
+}
+
+
+/*------------- funcion que envia la temperatura a serial bt--------------*/
+
+ void enviarTemperatura(float temperatura){
+
+  if (isnan(temperatura)){ //Comprueba que el dato es un número
+    BT.println("Error enviar temperatura");
+  } else {
+    BT.println(temperatura); //Envía el dato por el puerto serie
+  }
 }
 
 
