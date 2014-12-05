@@ -173,7 +173,7 @@ public class DeviceSelectActivity extends Activity implements Handler.Callback
 		case BluetoothRemoteControlApp.MSG_CONNECTED:
 			// When connected to a device start the activity select
 			if(BluetoothRemoteControlApp.D) Log.i(TAG, "Conexion establecida de " + msg.obj);
-			startActivityForResult(new Intent(getApplicationContext(), SendData.class), ACTION_LIST);
+			startActivityForResult(new Intent(getApplicationContext(), ActionListActivity.class), ACTION_LIST);
 			break;
 		}
 		return false;
