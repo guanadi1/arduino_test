@@ -124,7 +124,7 @@ public class DeviceSelectActivity extends Activity implements Handler.Callback
 			Device device = (Device) parent.getItemAtPosition(position);
 
 			// Show connection dialog and make so that the connection it can be canceled
-			connectionProgressDialog = ProgressDialog.show(DeviceSelectActivity.this, "", "Estableciendo Conexi—n...", false, true);
+			connectionProgressDialog = ProgressDialog.show(DeviceSelectActivity.this, "", "Estableciendo Conexion...", false, true);
 			connectionProgressDialog.setOnCancelListener(new OnCancelListener()
 			{
 				public void onCancel(DialogInterface di)
@@ -132,7 +132,7 @@ public class DeviceSelectActivity extends Activity implements Handler.Callback
 					// The user can back out at any moment
 					connectionProgressDialog.dismiss();
 					appState.disconnect();
-					if(BluetoothRemoteControlApp.D) Log.i(TAG, "Canceled connection progress");
+					if(BluetoothRemoteControlApp.D) Log.i(TAG, "Cancelado progreso de conexion");
 					return;
 				}
 			});
@@ -172,7 +172,7 @@ public class DeviceSelectActivity extends Activity implements Handler.Callback
 			break;
 		case BluetoothRemoteControlApp.MSG_CONNECTED:
 			// When connected to a device start the activity select
-			if(BluetoothRemoteControlApp.D) Log.i(TAG, "Connection successful to " + msg.obj);
+			if(BluetoothRemoteControlApp.D) Log.i(TAG, "Conexion establecida de " + msg.obj);
 			startActivityForResult(new Intent(getApplicationContext(), SendData.class), ACTION_LIST);
 			break;
 		}
@@ -189,7 +189,7 @@ public class DeviceSelectActivity extends Activity implements Handler.Callback
 		// Prevent phones without Bluetooth from using this application
 		if(!checkBlueToothState())
 		{
-			finish();
+		        finish();
 			return;
 		}
 
@@ -268,7 +268,7 @@ public class DeviceSelectActivity extends Activity implements Handler.Callback
 		// Inform user that the phone does not have Bluetooth
 		if(bluetoothAdapter == null)
 		{
-			Toast.makeText(getApplicationContext(), "Bluetooth not available.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Bluetooth no disponible.", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		else if(!bluetoothAdapter.isEnabled())
@@ -293,7 +293,7 @@ public class DeviceSelectActivity extends Activity implements Handler.Callback
 			// For the Bluetooth connection handle messages here
 			if(!bluetoothAdapter.isEnabled())
 			{
-				Toast.makeText(getApplicationContext(), "Bluetooth must be enabled", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Tiene que habilitar el Bluetooth", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
