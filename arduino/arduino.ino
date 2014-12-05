@@ -1,5 +1,4 @@
 
-
 #include <SoftwareSerial.h>   // libreria comunicacion serial 
 #include <NewPing.h>      // libreria sensor ultrasonico
 #include "DHT.h" // Libreria para Sensores Temperatura DHT
@@ -26,6 +25,7 @@ SoftwareSerial BT(10,11);  // Inicializa bluetooth
 char rec; // variable que recoje valor recibido
 char sen; // variable con valor a enviar
 int velocidad = 255; // variable donde almacenamos la velocidad del motor 0-255
+int rgb=0;
 
 
 // Configura Arduino
@@ -40,7 +40,7 @@ pinMode(RELAYPIN, OUTPUT); // PIN relay como salida
 
 Serial.begin(9600);  //monitor serial
 Serial.println("Prueba log:");
-bluetoothBridge.begin(9600); // inciamos comunicacion bluetooth
+BT.begin(9600); // inciamos comunicacion bluetooth
 Serial.println("Connection inciada bluetooth ");
 dht.begin(); // iniciamos sensor dth 11
 
@@ -50,7 +50,7 @@ dht.begin(); // iniciamos sensor dth 11
 
 void loop() {
 
-delay(1000); // Espera dos segundos para realizar la primera medición.
+//delay(1000); // Espera dos segundos para realizar la primera medición.
 
 leerDato();  // leer datos de serial y lo almacena en rec
 /*----------ldr---------------*/
@@ -59,12 +59,12 @@ int vldr = analogRead(LDRPIN);
 Serial.print("Valor ldr: ");
 Serial.println(vldr);
 
-if( vldr < 400 || rec == '0' ){
+if( vldr < 400 && rgb == '0' ){
 
 setColor(0, 255, 255); // ilumina led rgb con color aqua
 Serial.println("led encendido por LDR");
 
-}else if( vldr > 400 || rec == '1' ) {
+}else if( vldr > 400 && rgb == '1' ) {
 
 setColor(0, 0, 0); // apagamos el led
 Serial.println("led apagado por LDR");
@@ -79,10 +79,12 @@ switch(rec){
 case '0':
 setColor(0, 255, 255); // ilumina led rgb con color aqua
 Serial.println("led encendido boton");
+rgb=0;
 break;
 case '1':
 setColor(0, 0, 0); // apagamos el led
 Serial.println("led apagado boton");
+rgb=1;
 break;
 case '2':
 digitalWrite(RELAYPIN, HIGH); // bombilla on
@@ -129,10 +131,10 @@ Serial.print(distancia );
 Serial.println(" cm");
 if (distancia < 2) { // check if the input is HIGH
 playTono(300, 160);
-delay(150);
+//delay(150);
 } else {
 playTono(0, 0);
-delay(150);
+//delay(150);
 }
 
 }
