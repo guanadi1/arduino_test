@@ -46,21 +46,21 @@ public class ActionListActivity extends BluetoothActivity
 		lvActionList = (ListView) findViewById(R.id.lvActionList);
 
 		// Remote control activities
-		activityList.add(new Action("Accelerometer Control", "Control your robot by tilting the phone", "AccelerometerControl"));
-		activityList.add(new Action("Touch Control", "Control robot's movements by touch", "TouchControl"));
+		//activityList.add(new Action("Accelerometer Control", "Control your robot by tilting the phone", "AccelerometerControl"));
+		//activityList.add(new Action("Touch Control", "Control robot's movements by touch", "TouchControl"));
 		//activityList.add(new Action("Arrow Control", "Simplistic control with arrows", "ArrowControl"));
-		activityList.add(new Action("Voice Control", "Control robot with oral instructions", "VoiceControl"));
+		activityList.add(new Action("Control por voz", "Control mediante comandos por voz", "VoiceControl"));
 		//activityList.add(new Action("Program", "Save and replay a set of instructions", "Program"));
 		//activityList.add(new Action("Keypad", "Send numbers from 1 to 9 for custom actions", "Keypad"));
-		activityList.add(new Action("Wi-Fi Control", "Use a computer to remotely control from a browser", "WiFiControl"));
+		activityList.add(new Action(" Control Wi-Fi", "Utilice un ordenador para controlar de forma remota desde un navegarr", "WiFiControl"));
 		
 		// Autonomous control
-		activityList.add(new Action("Line Follower", "Use the phone's camera to follow a black line", "LineFollower"));
-		activityList.add(new Action("Kill All Humans", "Use face detection to run down humans", "KillAllHumans"));
+		//activityList.add(new Action("Line Follower", "Use the phone's camera to follow a black line", "LineFollower"));
+		//activityList.add(new Action("Kill All Humans", "Use face detection to run down humans", "KillAllHumans"));
 		
 		// TODO: Organize this into better categories
 		// Miscellaneous
-		activityList.add(new Action("Send Data", "Send custom commands to robot", "SendData"));
+		activityList.add(new Action("Enviar Comandos ", "Enviar comandos personalizados por serial", "SendData"));
 		// Maybe put this one in the API
 		//activityList.add(new Action("Transmit Data", "Transmit data over Wi-Fi via a GET requests", "TransmitData"));
 		//activityList.add(new Action("Sound", "Make sounds by toggling the motor direction", "Sound"));
@@ -111,7 +111,7 @@ public class ActionListActivity extends BluetoothActivity
 		// When a child activity returns it passes ok or cancel message
 		if(msg.what == BluetoothRemoteControlApp.MSG_OK)
 		{
-			// When quitting an activity automatically reset the robot
+			// When quitting an activity automatically reset
 			write("r");
 		}
 		return false;
