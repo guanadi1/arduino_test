@@ -44,13 +44,13 @@ import android.util.Log;
  */
 public class BluetoothRemoteControlApp extends Application
 {
-	private final static String TAG = "Blueberry";
+	private final static String TAG = "BluetoothRemote";
 	// Debug flag
 	public final static boolean D = false;
 
-	// Time between sending the idle filler to confirm communication, must be smaller than the timeout constant.
+	// El tiempo entre el envío de la carga de inactividad para confirmar la comunicación, debe ser menor que la constante de tiempo de espera.
 	private final int minCommInterval = 900;
-	// Time after which the communication is deemed dead
+	// Tiempo después de que la comunicación se considera muerto
 	private final int timeout = 60000;
 	private long lastComm;
 
@@ -125,7 +125,7 @@ public class BluetoothRemoteControlApp extends Application
 	private synchronized void setState(int newState)
 	{
 		if(D)
-			Log.i(TAG, "Connection status: " + state + " -> " + newState);
+			Log.i(TAG, "Estado de la conexión: " + state + " -> " + newState);
 		state = newState;
 	}
 
@@ -147,7 +147,7 @@ public class BluetoothRemoteControlApp extends Application
 	public synchronized void connect(BluetoothDevice device)
 	{
 		if(D)
-			Log.i(TAG, "Connecting to " + device.getName());
+			Log.i(TAG, "Conectado a " + device.getName());
 		stoppingConnection = false;
 		busy = false;
 
@@ -201,7 +201,7 @@ public class BluetoothRemoteControlApp extends Application
 			{
 				// Blocking function, needs the timeout
 				if(D)
-					Log.i(TAG, "Connecting to socket");
+					Log.i(TAG, "Conectado al socket");
 				socket.connect();
 			}
 			catch(IOException e)
@@ -210,7 +210,7 @@ public class BluetoothRemoteControlApp extends Application
 				if(!stoppingConnection)
 				{
 					if(D)
-						Log.e(TAG, "Cound not connect to socket");
+						Log.e(TAG, "No se pudo conectar al socket");
 					e.printStackTrace();
 					try
 					{
@@ -219,7 +219,7 @@ public class BluetoothRemoteControlApp extends Application
 					catch(IOException e1)
 					{
 						if(D)
-							Log.e(TAG, "Cound not close the socket");
+							Log.e(TAG, "No se pudo cerrar el socket");
 						e1.printStackTrace();
 					}
 					disconnect();
@@ -290,7 +290,7 @@ public class BluetoothRemoteControlApp extends Application
 					if(!stoppingConnection)
 					{
 						if(D)
-							Log.e(TAG, "Failed to read");
+							Log.e(TAG, "Error al leer");
 						e.printStackTrace();
 						disconnect();
 					}
@@ -366,7 +366,7 @@ public class BluetoothRemoteControlApp extends Application
 		{
 			// Set the time before first check
 			if(D)
-				Log.i(TAG, "Started timeout thread");
+				Log.i(TAG, "Iniciado hilo de tiempo de espera");
 			updateLastComm();
 		}
 
@@ -422,7 +422,7 @@ public class BluetoothRemoteControlApp extends Application
 		if(busy && !out.equals(out))
 		{
 			if(D)
-				Log.v(TAG, "Busy");
+				Log.v(TAG, "Ocupado");
 			return false;
 		}
 		busy = true;
@@ -460,7 +460,7 @@ public class BluetoothRemoteControlApp extends Application
 				bluetoothThread = null;
 			}
 			setState(STATE_NONE);
-			sendMessage(MSG_CANCEL, "Connection ended");
+			sendMessage(MSG_CANCEL, "Conexión finalizada");
 		}
 	}
 }
