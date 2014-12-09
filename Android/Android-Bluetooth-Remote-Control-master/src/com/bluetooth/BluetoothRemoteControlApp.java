@@ -46,12 +46,12 @@ public class BluetoothRemoteControlApp extends Application
 {
 	private final static String TAG = "BluetoothRemote";
 	// Debug flag
-	public final static boolean D = false;
+	public final static boolean D = true;
 
 	// El tiempo entre el env铆o de la carga de inactividad para confirmar la comunicaci贸n, debe ser menor que la constante de tiempo de espera.
 	private final int minCommInterval = 900;
 	// Tiempo despu茅s de que la comunicaci贸n se considera muerto
-	private final int timeout = 60000;
+	private final int timeout = 6000;
 	private long lastComm;
 
 	// Member fields
@@ -125,7 +125,7 @@ public class BluetoothRemoteControlApp extends Application
 	private synchronized void setState(int newState)
 	{
 		if(D)
-			Log.i(TAG, "Estado de la conexi贸n: " + state + " -> " + newState);
+			Log.i(TAG, "Estado de la conexi梟: " + state + " -> " + newState);
 		state = newState;
 	}
 
@@ -165,8 +165,8 @@ public class BluetoothRemoteControlApp extends Application
 		bluetoothThread.start();
 
 		// Start the timeout thread to check the connecting status
-		timeoutThread = new TimeoutThread();
-		timeoutThread.start();
+		//timeoutThread = new TimeoutThread();
+		//timeoutThread.start();
 	}
 
 	/**
@@ -248,8 +248,8 @@ public class BluetoothRemoteControlApp extends Application
 
 			byte[] buffer = new byte[1024];
 			byte ch;
-			int bytes;
 			String input;
+			int bytes;
 
 			// Keep listening to the InputStream while connected
 			while(true)
@@ -260,11 +260,14 @@ public class BluetoothRemoteControlApp extends Application
 					// println() used in Arduino code adds \r\n to the end of the stream
 					bytes = 0;
 					while((ch = (byte) inStream.read()) != '\n')
-					{
+					{  
+						
 						buffer[bytes++] = ch;
+				
+						
 					}
 					// Prevent read errors (if you mess enough with it)
-					if(bytes > 0)
+					if(bytes> 0)
 					{
 						// The carriage return (\r) character has to be removed
 						input = new String(buffer, "UTF-8").substring(0, bytes - 1);
@@ -290,6 +293,7 @@ public class BluetoothRemoteControlApp extends Application
 					if(!stoppingConnection)
 					{
 						if(D)
+						
 							Log.e(TAG, "Error al leer");
 						e.printStackTrace();
 						disconnect();
@@ -460,7 +464,7 @@ public class BluetoothRemoteControlApp extends Application
 				bluetoothThread = null;
 			}
 			setState(STATE_NONE);
-			sendMessage(MSG_CANCEL, "Conexi贸n finalizada");
+			sendMessage(MSG_CANCEL, "Conexi梟 finalizada");
 		}
 	}
 }

@@ -74,6 +74,9 @@ public class SendData extends BluetoothActivity
 		{
 		case BluetoothRemoteControlApp.MSG_READ:
 			tvData.append("R: " + msg.obj + "\n");
+	// msg.obj=="t:*")
+			tvData.append("Temperatura: " + msg.obj + "\n");
+
 			break;
 		case BluetoothRemoteControlApp.MSG_WRITE:
 			tvData.append("S: " + msg.obj + "\n");
