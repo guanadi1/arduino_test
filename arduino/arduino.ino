@@ -22,10 +22,10 @@
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); //iniciamos sensor ultrasonico con la clase NewPing
 DHT dht(DHTPIN, DHTTYPE); // Inicializa el sensor dth
 SoftwareSerial BT(10,11);  // Inicializa bluetooth
-char rec; // variable que recoje valor recibido
 char sen; // variable con valor a enviar
 int velocidad = 255; // variable donde almacenamos la velocidad del motor 0-255
 int rgb=0;
+char serialData[32];
 
 
 // Configura Arduino
@@ -52,7 +52,7 @@ void loop() {
 
 //delay(1000); // Espera dos segundos para realizar la primera medición.
 
-leerDato();  // leer datos de serial y lo almacena en rec
+leerDato();  // leer datos de serial y lo almacena en serialdata
 /*----------ldr---------------*/
 
 int vldr = analogRead(LDRPIN);
@@ -74,7 +74,7 @@ Serial.println("led apagado por LDR");
 
 
 
-switch(rec){
+switch(serialData[0]){
 
 case '0':
 setColor(0, 255, 255); // ilumina led rgb con color aqua
@@ -178,10 +178,10 @@ tiempo_transcurrido += (periodo);
 
 void leerDato(){
   if (Serial.available()>0){
-     rec = Serial.read();
-     //rec = BT.read(); // leemos la comunicacion serial de bluetooth
+     Serial.readBytesUntil('\n', serialData, 31);
+     //BT.readBytesUntil('\n', serialData, 31); // leemos la comunicacion serial de bluetooth
      Serial.print("valor recibido:");
-     Serial.println(rec);     
+     Serial.println(serialData[0]);     
 }
  Serial.flush();
 }
