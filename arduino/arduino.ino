@@ -6,7 +6,7 @@
 #define DHTTYPE DHT11 // tipo de sensor DHT usado
 #define DCPIN 3 // pin 3 motor dc 
 // variables led RGB
-#define LDRPIN 0   // pin 0 analogo 
+#define LDRPIN 0   // pin 0 analogo recoje valor de la resistencia que envia el ldr
 #define REDRGB 4 // Pin 4 para el color rojo
 #define GREENRGB 5 // Pin 5 para el color verde
 #define BLUERGB 6 //Pin 6 para el color azul
@@ -22,10 +22,9 @@
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); //iniciamos sensor ultrasonico con la clase NewPing
 DHT dht(DHTPIN, DHTTYPE); // Inicializa el sensor dth
 SoftwareSerial BT(10,11);  // Inicializa bluetooth
-char sen; // variable con valor a enviar
 int velocidad = 255; // variable donde almacenamos la velocidad del motor 0-255
-int rgb=0;
-char serialData[32];
+int rgb=0; // modo rgb para controlarlo por ldr que seria 0 automatico o 1 con el boton ya no encendera por luz 
+char serialData[32]; // variable de 32 bits que recoje valor enviado por serial BT
 
 
 // Configura Arduino
@@ -178,12 +177,12 @@ tiempo_transcurrido += (periodo);
 
 void leerDato(){
   if (Serial.available()>0){
-     Serial.readBytesUntil('\n', serialData, 31);
-     //BT.readBytesUntil('\n', serialData, 31); // leemos la comunicacion serial de bluetooth
+     serialData[0] = Serial.read();
+     //serialData[0] = BT.read(); // leemos la comunicacion serial de bluetooth
      Serial.print("valor recibido:");
      Serial.println(serialData[0]);     
 }
- Serial.flush();
+ Serial.flush(); // limpiamos serial
 }
 
 
@@ -199,11 +198,3 @@ void leerDato(){
 }
 
 
-/*
-- led rgb ok falta 
-- rele bombilla ok
-- sensor ultrasonico y alarma ok
-- conexion bluetooth ok
-- temperatura con ventilador ok
-- 
-*/
