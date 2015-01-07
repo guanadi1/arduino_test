@@ -63,7 +63,7 @@ if( vldr < 400 && rgb == '0' ){
 setColor(0, 255, 255); // ilumina led rgb con color aqua
 Serial.println("led encendido por LDR");
 
-}else if( vldr > 400 && rgb == '1' ) {
+}else if( vldr > 400 && rgb == '0' ) {
 
 setColor(0, 0, 0); // apagamos el led
 Serial.println("led apagado por LDR");
@@ -78,12 +78,10 @@ switch(serialData[0]){
 case '0':
 setColor(0, 255, 255); // ilumina led rgb con color aqua
 Serial.println("led encendido boton");
-rgb=0;
 break;
 case '1':
 setColor(0, 0, 0); // apagamos el led
 Serial.println("led apagado boton");
-rgb=1;
 break;
 case '2':
 digitalWrite(RELAYPIN, HIGH); // bombilla on
@@ -92,6 +90,12 @@ break;
 case '3':
 digitalWrite(RELAYPIN, LOW); // bombilla off
 Serial.println("bombilla off");
+break;
+case '4':
+rgb=0; // se presiono luz rgb auto 
+break;
+case '5':
+rgb=1; // se cambia al modo rgb manual con boton movil 
 break;
 }
 
